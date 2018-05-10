@@ -1,4 +1,5 @@
 require "dotenv_rails_db_tasks_fix/version"
+require "dotenv"
 require "rails/all"
 
 module DotenvRailsDbTasksFix

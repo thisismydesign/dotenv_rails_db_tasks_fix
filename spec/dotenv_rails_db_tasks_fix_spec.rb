@@ -3,7 +3,7 @@ RSpec.describe DotenvRailsDbTasksFix do
     expect(DotenvRailsDbTasksFix::VERSION).not_to be nil
   end
 
-  it "does something useful" do
-    expect(false).to eq(true)
+  it "can execute `rake db:create`" do
+    Rake::Task["db:create"].invoke
   end
 end

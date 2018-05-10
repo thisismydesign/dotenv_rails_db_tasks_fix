@@ -1,5 +1,29 @@
 require "dotenv_rails_db_tasks_fix/version"
+require "rails/all"
 
 module DotenvRailsDbTasksFix
-  # Your code goes here...
+  if Rails.env.eql?("development")
+    module ActiveRecord::Tasks::DatabaseTasks
+      private
+
+      alias_method :old_each_current_configuration, :each_current_configuration
+      def each_current_configuration(environment)
+        environments = [environment]
+        environments << "test" if environment == "development"
+
+        environments.each do |environment|
+          # On load order see: https://github.com/bkeepers/dotenv#what-other-env-files-can-i-use
+          if environment.eql?("test")
+            Dotenv.overload(".env", ".env.#{environment}", ".env.#{environment}.local")
+          else
+            Dotenv.overload(".env", ".env.#{environment}", ".env.local", ".env.#{environment}.local")
+          end
+          Rails.env = environment
+
+          config = YAML::load(ERB.new(File.read(File.join(Rails.root, "config/database.yml"))).result)
+          yield config[environment], environment if config[environment]["database"]
+        end
+      end
+    end
+  end
 end

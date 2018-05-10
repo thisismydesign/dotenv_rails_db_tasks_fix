@@ -20,7 +20,8 @@ module DotenvRailsDbTasksFix
           end
           Rails.env = environment
 
-          config = YAML::load(ERB.new(File.read(File.join(Rails.root, "config/database.yml"))).result)
+          db_config = Pathname.new(self.root).join("config", "database.yml")
+          config = YAML::load(ERB.new(File.read(db_config)).result)
           yield config[environment], environment if config[environment]["database"]
         end
       end

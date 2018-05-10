@@ -3,6 +3,7 @@ require "dotenv"
 require "rails/all"
 
 module DotenvRailsDbTasksFix
+  # TODO: use DatabaseTasks.env instead, see: http://api.rubyonrails.org/classes/ActiveRecord/Tasks/DatabaseTasks.html
   if Rails.env.eql?("development")
     module ActiveRecord::Tasks::DatabaseTasks
       private

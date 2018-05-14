@@ -6,6 +6,7 @@ module DotenvRailsDbTasksFix
   def self.activate
     ActiveRecord::Tasks::DatabaseTasks.instance_eval do
       return unless env.eql?("development")
+
       private
 
       def each_current_configuration(environment)

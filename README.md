@@ -67,7 +67,7 @@ Created database 'app_test'
 
 ## Explanation
 
-ActiveRecord has this feature that it executes DB tasks in `test` env as well if the current env is `development`. They're pretty neat about it too! ([see](https://github.com/rails/rails/blob/v5.1.5/activerecord/lib/active_record/tasks/database_tasks.rb#L300):
+ActiveRecord has this feature that it executes DB tasks in `test` env as well if the current env is `development`. ([see](https://github.com/rails/rails/blob/v5.1.5/activerecord/lib/active_record/tasks/database_tasks.rb#L300):
 `environments << "test" if environment == "development"`). This happens in the middle of execution so there's no way for `dotenv` to nicely intervene and even if they did there are things already loaded at this point (e.g. env vars are interpolated to configs). Dotenv's recommendation is to use different env var names (e.g. `TEST_DB_NAME`, `DEVELOPMENT_DB_NAME`) but that would be counter-intuitive. Instead here we monkey patch `ActiveRecord::Tasks::DatabaseTasks` to explicitly reload env vars and the DB config when it switches to test env.
 
 *It's invasive and ugly but it only affects the development environment (so it's low-risk) and restores the expected behaviour of this widely used feature therefore sparing the annoyance and possible effort of investigation.*
@@ -77,7 +77,7 @@ See [this issue](https://github.com/thisismydesign/dotenv_rails_db_tasks_fix) an
 ## Caveats
 
 - Database config is expected to reside in Rails default `#{DatabaseTasks.root}/config/database.yml` (if you're using Rails `DatabaseTasks.root == Rails.root`)
-- Requires ActiveRecord >= 5.1.5, ~> 5.1.6 (althoguh following this solution it would be easy to extend support for other versions)
+- Requires ActiveRecord >= 5.1.5, ~> 5.1.6 (because there're slight differences in the private API, althoguh following this solution it would be easy to extend support for other versions)
 
 ## Installation
 

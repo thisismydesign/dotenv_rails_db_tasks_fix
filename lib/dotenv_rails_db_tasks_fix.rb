@@ -8,7 +8,6 @@ module DotenvRailsDbTasksFix
     module ActiveRecord::Tasks::DatabaseTasks
       private
 
-      alias_method :old_each_current_configuration, :each_current_configuration
       def each_current_configuration(environment)
         environments = [environment]
         environments << "test" if environment == "development"

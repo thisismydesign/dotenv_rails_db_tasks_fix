@@ -81,6 +81,7 @@ See [this issue](https://github.com/thisismydesign/dotenv_rails_db_tasks_fix) an
 - Database config is expected to reside in Rails default `#{DatabaseTasks.root}/config/database.yml` (if you're using Rails `DatabaseTasks.root == Rails.root`)
 - Requires ActiveRecord >= 5.1.5, ~> 5.1.6 (because there're slight differences in the private API, althoguh following this solution it would be easy to extend support for other versions)
 - There's some weirdness with `Rails.env` vs `DatabaseTasks.env`. From trial-and-error it seems changing `DatabaseTasks.env` to reflect the current execution env will result in issues (with e.g. `db:setup` and `db:reset`), while changing `Rails.env` is actually required for `db:setup` to work correctly. [This fix](https://github.com/thisismydesign/dotenv_rails_db_tasks_fix/blob/be83ad6f97e4c1eb4bcfb5a2860eb3b53d7ff063/lib/dotenv_rails_db_tasks_fix.rb#L24-L28) seems to work for the use cases I tried but it's good to keep this in mind in case any similar issue presents.
+- If you introduce this to a project currently in use a final `db:environment:set` might be needed if prompted
 
 ## Installation
 

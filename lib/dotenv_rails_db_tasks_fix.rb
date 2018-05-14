@@ -2,9 +2,9 @@ require "dotenv_rails_db_tasks_fix/version"
 require "dotenv"
 require "rails/all"
 
+# TODO: just by loading the dependency this will activate, make it explicit instead
 module DotenvRailsDbTasksFix
-  # TODO: use DatabaseTasks.env instead, see: http://api.rubyonrails.org/classes/ActiveRecord/Tasks/DatabaseTasks.html
-  if Rails.env.eql?("development")
+  if ActiveRecord::Tasks::DatabaseTasks.env.eql?("development")
     module ActiveRecord::Tasks::DatabaseTasks
       private
 

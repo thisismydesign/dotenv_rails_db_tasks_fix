@@ -21,6 +21,12 @@ module DotenvRailsDbTasksFix
             Dotenv.overload(".env", ".env.#{environment}", ".env.local", ".env.#{environment}.local")
           end
 
+          # This is a fix for consecutive `db:setup` calls
+          # Without this they would run into `ActiveRecord::EnvironmentMismatchError`
+          # Otherwise it could be circumvented by using the `DISABLE_DATABASE_ENVIRONMENT_CHECK` env var or executing `db:drop` previously
+          # Check for `Rails` is there because it's not a dependency
+          Rails.env = environment if defined?(Rails)
+
           db_config = Pathname.new(self.root).join("config", "database.yml")
           config = YAML::load(ERB.new(File.read(db_config)).result)
           yield config[environment], environment if config[environment]["database"]

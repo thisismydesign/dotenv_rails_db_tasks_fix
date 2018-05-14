@@ -33,15 +33,17 @@ DB_NAME=test
 ```
 
 ```
-$ rails db:create
+$ rails db:setup
 =>
 Created database 'app_development'
 Database 'app_development' already exists
 ```
 
 ```
-$ rails db:create
+$ rails db:setup
 =>
+Database 'app_development' already exists
+Database 'app_development' already exists
 rails aborted!
 ActiveRecord::EnvironmentMismatchError: You are attempting to modify a database that was last run in `test` environment.
 You are running in `development` environment. If you are sure you want to continue, first set the environment using:

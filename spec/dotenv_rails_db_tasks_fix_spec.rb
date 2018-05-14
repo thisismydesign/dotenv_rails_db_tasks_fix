@@ -1,12 +1,20 @@
+
 RSpec.describe DotenvRailsDbTasksFix do
   it "has a version number" do
     expect(DotenvRailsDbTasksFix::VERSION).not_to be nil
   end
 
   describe "rake db:create" do
+    def remove_db_files
+      Dir.glob(Pathname.new(RSPEC_ROOT).join("example_project", "db", "*.sqlite3")) { |file| FileUtils.rm(file) }
+    end
+
+    before do
+      remove_db_files
+    end
+
     after do
-      FileUtils.rm(Pathname.new(RSPEC_ROOT).join("example_project", "db", "development.sqlite3"))
-      FileUtils.rm(Pathname.new(RSPEC_ROOT).join("example_project", "db", "test.sqlite3"))
+      remove_db_files
     end
 
     it "outputs DB creation message for 'development' and 'test' DBs" do

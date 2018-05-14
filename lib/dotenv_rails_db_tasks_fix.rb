@@ -1,6 +1,6 @@
 require "dotenv_rails_db_tasks_fix/version"
 require "dotenv"
-require "rails/all"
+require "active_record"
 
 # TODO: just by loading the dependency this will activate, make it explicit instead
 module DotenvRailsDbTasksFix
@@ -20,7 +20,7 @@ module DotenvRailsDbTasksFix
           else
             Dotenv.overload(".env", ".env.#{environment}", ".env.local", ".env.#{environment}.local")
           end
-          Rails.env = environment
+          self.env = environment
 
           db_config = Pathname.new(self.root).join("config", "database.yml")
           config = YAML::load(ERB.new(File.read(db_config)).result)

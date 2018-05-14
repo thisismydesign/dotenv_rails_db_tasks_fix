@@ -6,9 +6,9 @@ RSpec::Core::RakeTask.new(:spec)
 task :default => :spec
 
 require "active_record"
-require "rails"
 require "erb"
 require 'dotenv'
+require 'yaml'
 
 environment = ENV["RAILS_ENV"] || "development"
 Dotenv.overload(".env", ".env.#{environment}", ".env.local", ".env.#{environment}.local")

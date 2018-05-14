@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "dotenv"
-  spec.add_dependency "rails", ">= 5.1.5", "~> 5.1.6" # Because of `Rails.env`, otherwise activerecord would be enough
+  spec.add_dependency "activerecord", ">= 5.1.5", "~> 5.1.6"
 
   spec.add_development_dependency "sqlite3"
   spec.add_development_dependency "bundler", "~> 1.16"

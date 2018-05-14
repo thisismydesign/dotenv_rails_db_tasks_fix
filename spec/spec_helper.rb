@@ -1,7 +1,4 @@
 require "bundler/setup"
-require "dotenv_rails_db_tasks_fix"
-require 'rake'
-require 'yaml'
 
 RSPEC_ROOT = File.dirname __FILE__
 
@@ -15,6 +12,10 @@ unless ran_by_guard
   require "coveralls"
   Coveralls.wear!
 end
+
+require "dotenv_rails_db_tasks_fix"
+require 'rake'
+require 'yaml'
 
 environment = "development"
 db_config = Pathname.new(RSPEC_ROOT).join("example_project", "config", "database.yml")

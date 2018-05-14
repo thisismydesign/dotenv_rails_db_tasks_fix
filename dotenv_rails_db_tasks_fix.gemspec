@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["git.thisismydesign@gmail.com"]
 
   spec.summary       = ""
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/thisismydesign/dotenv_rails_db_tasks_fix"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})

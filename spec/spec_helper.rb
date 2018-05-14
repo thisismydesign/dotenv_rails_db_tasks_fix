@@ -2,6 +2,8 @@ require "bundler/setup"
 require "dotenv_rails_db_tasks_fix"
 require "active_record"
 require 'rake'
+require 'dotenv'
+# Dotenv.load
 
 RSPEC_ROOT = File.dirname __FILE__
 

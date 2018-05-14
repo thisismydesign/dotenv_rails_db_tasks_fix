@@ -61,7 +61,7 @@ DotenvRailsDbTasksFix.activate
 ```
 
 ```
-$ rails db:create
+$ rails db:setup
 =>
 Created database 'app_development'
 Created database 'app_test'

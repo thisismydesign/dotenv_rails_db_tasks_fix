@@ -1,6 +1,14 @@
 # DotenvRailsDbTasksFix
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/dotenv_rails_db_tasks_fix`. To experiment with that code, run `bin/console` for an interactive prompt.
+#### Fix for the issue when ActiveRecord `rake db:*` tasks are magically executed in both developement and test environments, but ENV vars loaded via Dotenv and DB config containing ENV vars don't pick up the change.
+
+*You are viewing the README of the development version.*
+​
+| Branch | Status |
+| ------ | ------ |
+| Release | [![Build Status](https://travis-ci.org/thisismydesign/dotenv_rails_db_tasks_fix.svg?branch=release)](https://travis-ci.org/thisismydesign/dotenv_rails_db_tasks_fix)   [![Coverage Status](https://coveralls.io/repos/github/thisismydesign/dotenv_rails_db_tasks_fix/badge.svg?branch=release)](https://coveralls.io/github/thisismydesign/dotenv_rails_db_tasks_fix?branch=release)   [![Gem Version](https://badge.fury.io/rb/dotenv_rails_db_tasks_fix.svg)](https://badge.fury.io/rb/dotenv_rails_db_tasks_fix)   [![Total Downloads](http://ruby-gem-downloads-badge.herokuapp.com/dotenv_rails_db_tasks_fix?type=total)](https://rubygems.org/gems/dotenv_rails_db_tasks_fix) |
+| Development | [![Build Status](https://travis-ci.org/thisismydesign/dotenv_rails_db_tasks_fix.svg?branch=master)](https://travis-ci.org/thisismydesign/dotenv_rails_db_tasks_fix)   [![Coverage Status](https://coveralls.io/repos/github/thisismydesign/dotenv_rails_db_tasks_fix/badge.svg?branch=master)](https://coveralls.io/github/thisismydesign/dotenv_rails_db_tasks_fix?branch=master) |
+
 
 TODO: Delete this and the text above, and describe your gem
 

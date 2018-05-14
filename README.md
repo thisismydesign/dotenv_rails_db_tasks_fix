@@ -95,15 +95,28 @@ Or install it yourself as:
 
     $ gem install dotenv_rails_db_tasks_fix
 
-## Development
+## Feedback
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+Any feedback is much appreciated.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+I can only tailor this project to fit use-cases I know about - which are usually my own ones. If you find that this might be the right direction to solve your problem too but you find that it's suboptimal or lacks features don't hesitate to contact me.
+
+Let me know if you make use of this project so that I can prioritize further efforts.
+
+## Conventions
+
+This gem is developed using the following conventions:
+- [Bundler's guide for developing a gem](http://bundler.io/v1.14/guides/creating_gem.html)
+- [Better Specs](http://www.betterspecs.org/)
+- [Semantic versioning](http://semver.org/)
+- [RubyGems' guide on gem naming](http://guides.rubygems.org/name-your-gem/)
+- [RFC memo about key words used to Indicate Requirement Levels](https://tools.ietf.org/html/rfc2119)
+- [Bundler improvements](https://github.com/thisismydesign/bundler-improvements)
+- [Minimal dependencies](http://www.mikeperham.com/2016/02/09/kill-your-dependencies/)
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/dotenv_rails_db_tasks_fix.
+Bug reports and pull requests are welcome on GitHub at https://github.com/thisismydesign/dotenv_rails_db_tasks_fix.
 
 ## License
 

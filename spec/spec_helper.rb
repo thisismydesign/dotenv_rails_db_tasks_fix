@@ -4,7 +4,7 @@ require 'rake'
 require 'yaml'
 
 RSPEC_ROOT = File.dirname __FILE__
-environment = ENV["RAILS_ENV"] || "development"
+environment = "development"
 db_config = Pathname.new(RSPEC_ROOT).join("example_project", "config", "database.yml")
 
 Dotenv.overload(".env", ".env.#{environment}", ".env.local", ".env.#{environment}.local")

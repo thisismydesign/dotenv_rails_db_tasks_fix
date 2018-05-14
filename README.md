@@ -2,7 +2,7 @@
 
 #### Fix for the issue when ActiveRecord `rake db:*` tasks are magically executed in both developement and test environments, but environment variables loaded via `dotenv` are not picking up the change.
 
-*You are viewing the README of the development version.*
+*You are viewing the README of version [v0.1.0](https://github.com/thisismydesign/dotenv_rails_db_tasks_fix/releases/tag/v0.1.0).*
 
 | Branch | Status |
 | ------ | ------ |

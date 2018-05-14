@@ -2,10 +2,10 @@ require "dotenv_rails_db_tasks_fix/version"
 require "dotenv"
 require "active_record"
 
-# TODO: just by loading the dependency this will activate, make it explicit instead
 module DotenvRailsDbTasksFix
-  if ActiveRecord::Tasks::DatabaseTasks.env.eql?("development")
-    module ActiveRecord::Tasks::DatabaseTasks
+  def self.activate
+    ActiveRecord::Tasks::DatabaseTasks.instance_eval do
+      return unless env.eql?("development")
       private
 
       def each_current_configuration(environment)

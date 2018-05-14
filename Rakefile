@@ -1,22 +1,19 @@
 require "bundler/gem_tasks"
 require "rspec/core/rake_task"
+require_relative "lib/dotenv_rails_db_tasks_fix"
 
 RSpec::Core::RakeTask.new(:spec)
 
 task :default => :spec
 
-require "active_record"
 require "erb"
-require 'dotenv'
 require 'yaml'
 
-environment = ENV["RAILS_ENV"] || "development"
-Dotenv.overload(".env", ".env.#{environment}", ".env.local", ".env.#{environment}.local")
-
 RSPEC_ROOT = Pathname.new(File.dirname(__FILE__)).join("spec")
-
+environment = ENV["RAILS_ENV"] || "development"
 db_config = Pathname.new(RSPEC_ROOT).join("example_project", "config", "database.yml")
-YAML::load(ERB.new(File.read(db_config)).result)
+
+Dotenv.overload(".env", ".env.#{environment}", ".env.local", ".env.#{environment}.local")
 
 include ActiveRecord::Tasks
 DatabaseTasks.database_configuration = YAML::load(ERB.new(File.read(db_config)).result)
@@ -26,5 +23,4 @@ DatabaseTasks.migrations_paths = [File.join(DatabaseTasks.root, 'db/migrate')]
 DatabaseTasks.env = environment
 load 'active_record/railties/databases.rake'
 
-require_relative "lib/dotenv_rails_db_tasks_fix"
-# include DotenvRailsDbTasksFix
+DotenvRailsDbTasksFix.activate

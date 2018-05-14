@@ -20,7 +20,6 @@ module DotenvRailsDbTasksFix
           else
             Dotenv.overload(".env", ".env.#{environment}", ".env.local", ".env.#{environment}.local")
           end
-          self.env = environment
 
           db_config = Pathname.new(self.root).join("config", "database.yml")
           config = YAML::load(ERB.new(File.read(db_config)).result)

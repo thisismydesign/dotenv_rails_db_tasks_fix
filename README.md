@@ -6,6 +6,7 @@
 
 | Branch | Status |
 | ------ | ------ |
+| Release | [![Build Status](https://travis-ci.org/thisismydesign/dotenv_rails_db_tasks_fix.svg?branch=release)](https://travis-ci.org/thisismydesign/dotenv_rails_db_tasks_fix)   [![Coverage Status](https://coveralls.io/repos/github/thisismydesign/dotenv_rails_db_tasks_fix/badge.svg?branch=release)](https://coveralls.io/github/thisismydesign/dotenv_rails_db_tasks_fix?branch=release)   [![Gem Version](https://badge.fury.io/rb/dotenv_rails_db_tasks_fix.svg)](https://badge.fury.io/rb/dotenv_rails_db_tasks_fix)   [![Total Downloads](http://ruby-gem-downloads-badge.herokuapp.com/dotenv_rails_db_tasks_fix?type=total)](https://rubygems.org/gems/dotenv_rails_db_tasks_fix) |
 | Development | [![Build Status](https://travis-ci.org/thisismydesign/dotenv_rails_db_tasks_fix.svg?branch=master)](https://travis-ci.org/thisismydesign/dotenv_rails_db_tasks_fix)   [![Coverage Status](https://coveralls.io/repos/github/thisismydesign/dotenv_rails_db_tasks_fix/badge.svg?branch=master)](https://coveralls.io/github/thisismydesign/dotenv_rails_db_tasks_fix?branch=master) |
 
 If you're using environment variables in your `database.yml` and load them via `Dotenv` chances are you also ran into this annoying issue in your development environment:

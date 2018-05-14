@@ -15,31 +15,14 @@ end
 
 require "dotenv_rails_db_tasks_fix"
 require 'rake'
-require 'yaml'
 require 'dotenv'
-require 'active_record'
+Dir[Pathname.new(RSPEC_ROOT).join("support", "**", "*.rb")].each { |f| require f }
 
 environment = "development"
-db_config = Pathname.new(RSPEC_ROOT).join("example_project", "config", "database.yml")
+project_path = Pathname.new(RSPEC_ROOT).join("example_project")
 
 Dotenv.overload(".env", ".env.#{environment}", ".env.local", ".env.#{environment}.local")
-
-class Seeder; def load_seed; end; end
-
-include ActiveRecord::Tasks
-DatabaseTasks.database_configuration = YAML::load(ERB.new(File.read(db_config)).result)
-DatabaseTasks.root = Pathname.new(RSPEC_ROOT).join("example_project")
-DatabaseTasks.db_dir = Pathname.new(DatabaseTasks.root).join("db")
-DatabaseTasks.migrations_paths = [File.join(DatabaseTasks.root, 'db/migrate')]
-DatabaseTasks.env = environment
-DatabaseTasks.seed_loader = Seeder.new
-
-task :environment do
-  ActiveRecord::Base.configurations = DatabaseTasks.database_configuration
-  ActiveRecord::Base.establish_connection DatabaseTasks.env.to_sym
-end
-
-load 'active_record/railties/databases.rake'
+load_active_record_tasks(project_path: project_path, env: environment)
 
 DotenvRailsDbTasksFix.activate
 

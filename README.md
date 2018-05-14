@@ -9,7 +9,7 @@
 | Release | [![Build Status](https://travis-ci.org/thisismydesign/dotenv_rails_db_tasks_fix.svg?branch=release)](https://travis-ci.org/thisismydesign/dotenv_rails_db_tasks_fix)   [![Coverage Status](https://coveralls.io/repos/github/thisismydesign/dotenv_rails_db_tasks_fix/badge.svg?branch=release)](https://coveralls.io/github/thisismydesign/dotenv_rails_db_tasks_fix?branch=release)   [![Gem Version](https://badge.fury.io/rb/dotenv_rails_db_tasks_fix.svg)](https://badge.fury.io/rb/dotenv_rails_db_tasks_fix)   [![Total Downloads](http://ruby-gem-downloads-badge.herokuapp.com/dotenv_rails_db_tasks_fix?type=total)](https://rubygems.org/gems/dotenv_rails_db_tasks_fix) |
 | Development | [![Build Status](https://travis-ci.org/thisismydesign/dotenv_rails_db_tasks_fix.svg?branch=master)](https://travis-ci.org/thisismydesign/dotenv_rails_db_tasks_fix)   [![Coverage Status](https://coveralls.io/repos/github/thisismydesign/dotenv_rails_db_tasks_fix/badge.svg?branch=master)](https://coveralls.io/github/thisismydesign/dotenv_rails_db_tasks_fix?branch=master) |
 
-If you're using environment variables in your `database.yml` and load them via `Dotenv` chances are you also ran into this annoying issue in your development environment:
+If you rely on environment variables loaded via `Dotenv` chances are you also ran into this issue. E.g.:
 
 `database.yml`
 ```
@@ -33,12 +33,16 @@ DB_NAME=test
 # ...
 ```
 
+In your development environment:
+
 ```
 $ rails db:setup
 =>
 Created database 'app_development'
 Database 'app_development' already exists
 ```
+
+It seems like the task is executed twice for the development environment (more on that later..) and you also often encounter an `EnvironmentMismatchError`:
 
 ```
 $ rails db:setup
@@ -52,13 +56,12 @@ You are running in `development` environment. If you are sure you want to contin
         bin/rails db:environment:set RAILS_ENV=development
 ```
 
-Using this gem you can do:
+#### Using this gem you can do:
 
 `Rakefile`
-```
+```ruby
 # ...
-require "dotenv_rails_db_tasks_fix"
-DotenvRailsDbTasksFix.activate
+DotenvRailsDbTasksFix.activate if ActiveRecord::Tasks::DatabaseTasks.env.eql?("development") # or Rails.env
 ```
 
 ```
@@ -70,15 +73,16 @@ Created database 'app_test'
 
 ## Explanation
 
-ActiveRecord has this feature that it executes DB tasks in `test` env as well if the current env is `development`. ([see](https://github.com/rails/rails/blob/v5.1.5/activerecord/lib/active_record/tasks/database_tasks.rb#L300):
-`environments << "test" if environment == "development"`). This happens in the middle of execution so there's no way for `dotenv` to nicely intervene and even if they did there are things already loaded at this point (e.g. env vars are interpolated to configs). Dotenv's recommendation is to use different env var names (e.g. `TEST_DB_NAME`, `DEVELOPMENT_DB_NAME`) but that would be counter-intuitive. Instead here we monkey patch `ActiveRecord::Tasks::DatabaseTasks` to explicitly reload env vars and the DB config when it switches to test env.
+ActiveRecord has this feature that it executes DB tasks in `test` env as well if the current env is `development` ([see](https://github.com/rails/rails/blob/v5.1.5/activerecord/lib/active_record/tasks/database_tasks.rb#L300):
+`environments << "test" if environment == "development"`). So ActiveRecord actually executes for different environments but not via a fresh start. This makes it impossible for `dotenv` to pick this change up in a clean way. But even if it did there are things already loaded at this point which dotenv should not touch. E.g. reinitializing the database config after an environment change should rather be the responsibility of ActiveRecord.
 
-*It's invasive and ugly but it only affects the development environment (so it's low-risk) and restores the expected behaviour of this widely used feature therefore sparing the annoyance and possible effort of investigation.*
+Dotenv's recommendation is to use different env var names (e.g. `TEST_DB_NAME`, `DEVELOPMENT_DB_NAME`) but that would be counter-intuitive. Instead via this gem `ActiveRecord::Tasks::DatabaseTasks` is monkey patched to explicitly reload env vars and the DB config when it switches to test env. *This approach undoubtedly has its cons but in this case it only affects the development environment and restores the expected behaviour of this widely used feature therefore sparing the annoyance and possible effort of investigation.*
 
-See [this issue](https://github.com/thisismydesign/dotenv_rails_db_tasks_fix) and [this article](http://www.zhuwu.me/blog/posts/rake-db-tasks-always-runs-twice-in-development-environment).
+See also [this issue](https://github.com/thisismydesign/dotenv_rails_db_tasks_fix) and [this article](http://www.zhuwu.me/blog/posts/rake-db-tasks-always-runs-twice-in-development-environment).
 
 ## Caveats
 
+- Outside of `development` environment `DotenvRailsDbTasksFix.activate` will `raise` and will _not_ monkey patch
 - Database config is expected to reside in Rails default `#{DatabaseTasks.root}/config/database.yml` (if you're using Rails `DatabaseTasks.root == Rails.root`)
 - Requires ActiveRecord >= 5.1.5, ~> 5.1.6 (because there're slight differences in the private API, althoguh following this solution it would be easy to extend support for other versions)
 - There's some weirdness with `Rails.env` vs `DatabaseTasks.env`. From trial-and-error it seems changing `DatabaseTasks.env` to reflect the current execution env will result in issues (with e.g. `db:setup` and `db:reset`), while changing `Rails.env` is actually required for `db:setup` to work correctly. [This fix](https://github.com/thisismydesign/dotenv_rails_db_tasks_fix/blob/be83ad6f97e4c1eb4bcfb5a2860eb3b53d7ff063/lib/dotenv_rails_db_tasks_fix.rb#L24-L28) seems to work for the use cases I tried but it's good to keep this in mind in case any similar issue presents.
@@ -89,7 +93,7 @@ See [this issue](https://github.com/thisismydesign/dotenv_rails_db_tasks_fix) an
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'dotenv_rails_db_tasks_fix'
+gem 'dotenv_rails_db_tasks_fix', group: :development
 ```
 
 And then execute:

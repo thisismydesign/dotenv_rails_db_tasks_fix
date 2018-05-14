@@ -4,6 +4,22 @@ RSpec.describe DotenvRailsDbTasksFix do
     expect(DotenvRailsDbTasksFix::VERSION).not_to be nil
   end
 
+  describe ".activate" do
+    context "when not in development environment" do
+      before do
+        DatabaseTasks.env = "test"
+      end
+
+      after do
+        DatabaseTasks.env = "development"
+      end
+
+      it "raises error" do
+        expect { DotenvRailsDbTasksFix.activate }.to raise_error(/activated outside of development environment/)
+      end
+    end
+  end
+
   describe "rake tasks" do
     def remove_db_files
       Dir.glob(Pathname.new(RSPEC_ROOT).join("example_project", "db", "*.sqlite3")) { |file| FileUtils.rm(file) }

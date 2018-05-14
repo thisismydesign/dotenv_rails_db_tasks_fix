@@ -4,9 +4,10 @@ require "active_record"
 
 module DotenvRailsDbTasksFix
   def self.activate
-    ActiveRecord::Tasks::DatabaseTasks.instance_eval do
-      return unless env.eql?("development")
+    target_env = "development".freeze
+    raise "`DotenvRailsDbTasksFix` activated outside of #{target_env} environment" unless ActiveRecord::Tasks::DatabaseTasks.env.eql?(target_env)
 
+    ActiveRecord::Tasks::DatabaseTasks.instance_eval do
       private
 
       def each_current_configuration(environment)

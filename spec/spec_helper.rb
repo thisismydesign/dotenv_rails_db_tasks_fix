@@ -21,10 +21,18 @@ Dir[Pathname.new(RSPEC_ROOT).join("support", "**", "*.rb")].each { |f| require f
 environment = "development"
 project_path = Pathname.new(RSPEC_ROOT).join("example_project")
 
-Dotenv.overload(".env", ".env.#{environment}", ".env.local", ".env.#{environment}.local")
-load_active_record_tasks(project_path: project_path, env: environment)
+class Seeder; def load_seed; end; end
+# Root path has to be execution path, see: https://github.com/rails/rails/issues/32910
+# Config is expected at `#{root}/config/database.yml`
+# If the issue above is fixed it can be moved to `#{root}/spec/example_project/config/database.yml`
+root = Pathname.new(".")
+db_config = root.join("config", "database.yml")
+db_dir = root.join("config")
 
-DotenvRailsDbTasksFix.activate
+Dotenv.overload(".env", ".env.#{environment}", ".env.local", ".env.#{environment}.local")
+config = YAML::load(ERB.new(File.read(db_config)).result)
+
+load_active_record_tasks(database_configuration: config, root: root, db_dir: db_dir, seed_loader: Seeder.new)
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

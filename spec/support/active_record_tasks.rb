@@ -1,28 +1,13 @@
-require "yaml"
 require "active_record"
-require "erb"
 
-class Seeder
-  def initialize(seed_file)
-    @seed_file = seed_file
-  end
-
-  def load_seed
-    load @seed_file unless File.file?(@seed_file)
-  end
-end
-
-# Assumes Rails default structure
-def load_active_record_tasks(project_path:, env:)
-  db_config = project_path.join("config", "database.yml")
-
+def load_active_record_tasks(database_configuration:, root:, db_dir: root, migrations_paths: [root], env: "development", seed_loader: nil)
   include ActiveRecord::Tasks
-  DatabaseTasks.database_configuration = YAML::load(ERB.new(File.read(db_config)).result)
-  DatabaseTasks.root = project_path
-  DatabaseTasks.db_dir = Pathname.new(DatabaseTasks.root).join("db")
-  DatabaseTasks.migrations_paths = [File.join(DatabaseTasks.root, 'db/migrate')]
+  DatabaseTasks.database_configuration = database_configuration
+  DatabaseTasks.root = root
+  DatabaseTasks.db_dir = db_dir
+  DatabaseTasks.migrations_paths = migrations_paths
   DatabaseTasks.env = env
-  DatabaseTasks.seed_loader = Seeder.new(File.join(DatabaseTasks.root, 'db/seeds.rb'))
+  DatabaseTasks.seed_loader = seed_loader
 
   task :environment do
     ActiveRecord::Base.configurations = DatabaseTasks.database_configuration

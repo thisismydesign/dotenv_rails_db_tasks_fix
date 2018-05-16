@@ -1,0 +1,7 @@
+development:
+  adapter: sqlite3
+  database: file:mem_db_development?mode=memory
+
+test:
+  adapter: sqlite3
+  database: file:mem_db_test?mode=memory

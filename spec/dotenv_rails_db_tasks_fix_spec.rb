@@ -46,6 +46,10 @@ RSpec.describe DotenvRailsDbTasksFix do
   
     describe "rake tasks" do
       describe "db:create" do
+        after do
+          Rake::Task["db:create"].reenable
+        end
+
         it "outputs DB creation message for 'development' and 'test' DBs" do
           output = "Created database 'file:mem_db_development?mode=memory'\nCreated database 'file:mem_db_test?mode=memory'\n"
           expect { Rake::Task["db:create"].invoke }.to output(output).to_stdout
@@ -53,9 +57,11 @@ RSpec.describe DotenvRailsDbTasksFix do
       end
   
       describe "db:setup" do
-        skip "outputs DB creation message for 'development' and 'test' DBs" do
-          # TODO: figure out why db:drop doesn't work
-          # OR reinitialize DB between tests
+        after do
+          Rake::Task["db:setup"].reenable
+        end
+
+        it "outputs DB creation message for 'development' and 'test' DBs" do
           output = "Created database 'file:mem_db_development?mode=memory'\nCreated database 'file:mem_db_test?mode=memory'\n"
           expect { Rake::Task["db:setup"].invoke }.to output(output).to_stdout
         end

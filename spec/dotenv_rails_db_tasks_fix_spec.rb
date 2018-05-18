@@ -17,7 +17,14 @@ RSpec.describe DotenvRailsDbTasksFix do
 
   describe "the problem" do
     describe "db:create" do
-      skip "tries to create 'development' DB twice" do
+      after do
+        Rake::Task["db:create"].reenable
+      end
+
+      it "tries to create 'development' DB twice" do
+        stdout = "Created database 'file:mem_db_development?mode=memory'\n"
+        stderr = "Database 'file:mem_db_development?mode=memory' already exists\n"
+        expect { Rake::Task["db:create"].invoke }.to output(stdout).to_stdout.and output(stderr).to_stderr
       end
     end
   end

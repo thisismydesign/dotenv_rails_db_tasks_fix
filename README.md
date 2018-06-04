@@ -82,7 +82,7 @@ See also [this issue](https://github.com/rails/rails/issues/32926) and [this art
 
 ## Version support
 
-Supports `ActiveRecord` 5.0.0 - 5.1.6. For certain versions of ActiveRecord 4 you can explicitly set `RAILS_ENV` to `development` to avoid execution in `test` env ([see e.g. 4.2](https://github.com/rails/rails/blob/v4.2.0/activerecord/lib/active_record/tasks/database_tasks.rb#L271)).
+Supports `ActiveRecord` 5.0.0 - 5.2.0. For certain versions of ActiveRecord 4 you can explicitly set `RAILS_ENV` to `development` to avoid execution in `test` env ([see e.g. 4.2](https://github.com/rails/rails/blob/v4.2.0/activerecord/lib/active_record/tasks/database_tasks.rb#L271)).
 
 ## Caveats
 

@@ -18,8 +18,8 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "dotenv"
-  spec.add_dependency "activerecord", ">= 5.0.0", "<= 5.1.6"
+  spec.add_dependency "dotenv", ">= 0.10.0" # `overload` introduced https://github.com/bkeepers/dotenv/commit/4cafc36c0c36a0eb243a37d2e18d26be3dab3d43#diff-299309060038a014968e16897bf9e21d
+  spec.add_dependency "activerecord", ">= 5.0.0", "<= 5.2.0"
 
   spec.add_development_dependency "sqlite3"
   spec.add_development_dependency "bundler", "~> 1.16"

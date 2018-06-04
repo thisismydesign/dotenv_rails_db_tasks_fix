@@ -78,7 +78,7 @@ ActiveRecord has this feature that it executes DB tasks in `test` env as well if
 
 Dotenv's recommendation is to use different env var names (e.g. `TEST_DB_NAME`, `DEVELOPMENT_DB_NAME`) but that would be counter-intuitive. Instead via this gem `ActiveRecord::Tasks::DatabaseTasks` is monkey patched to explicitly reload env vars and the DB config when it switches to test env. *This approach undoubtedly has its cons but in this case it only affects the development environment and restores the expected behaviour of this widely used feature therefore sparing the annoyance and possible effort of investigation.*
 
-See also [this issue](https://github.com/rails/rails/issues/32926) and [this article](http://www.zhuwu.me/blog/posts/rake-db-tasks-always-runs-twice-in-development-environment).
+See also [this issue](https://github.com/rails/rails/issues/32926) and [this article](https://medium.com/@csaba.apagyi/solving-rake-db-tasks-with-dotenv-executed-twice-in-dev-environment-4b1cb447d325).
 
 ## Version support
 

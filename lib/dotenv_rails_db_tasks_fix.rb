@@ -30,7 +30,16 @@ module DotenvRailsDbTasksFix
 
           db_config = Pathname.new(self.root).join("config", "database.yml")
           config = YAML::load(ERB.new(File.read(db_config)).result)
-          yield config[environment], environment if config[environment]["database"]
+
+          active_record_version = Gem::Version.new(ActiveRecord.version)
+
+          if active_record_version < Gem::Version.new("5.1.5")
+            # https://github.com/rails/rails/blob/v5.1.0/activerecord/lib/active_record/tasks/database_tasks.rb#L298-L306
+            yield config[environment] if config[environment]["database"]
+          else
+            # https://github.com/rails/rails/blob/v5.1.5/activerecord/lib/active_record/tasks/database_tasks.rb#L298-L307
+            yield config[environment], environment if config[environment]["database"]
+          end
         end
       end
     end

@@ -80,11 +80,14 @@ Dotenv's recommendation is to use different env var names (e.g. `TEST_DB_NAME`, 
 
 See also [this issue](https://github.com/thisismydesign/dotenv_rails_db_tasks_fix) and [this article](http://www.zhuwu.me/blog/posts/rake-db-tasks-always-runs-twice-in-development-environment).
 
+## Version support
+
+Support `ActiveRecord` 4 - 5.1.6. Although for certain versions of ActiveRecord 4 you can explicitly set `RAILS_ENV` to `development` to avoid execution in `test` env ([see e.g. 4.2](https://github.com/rails/rails/blob/v4.2.0/activerecord/lib/active_record/tasks/database_tasks.rb#L271)).
+
 ## Caveats
 
 - Outside of `development` environment `DotenvRailsDbTasksFix.activate` will `raise` and will _not_ monkey patch
 - Database config is expected to reside in Rails default `#{DatabaseTasks.root}/config/database.yml` (if you're using Rails `DatabaseTasks.root == Rails.root`)
-- Requires ActiveRecord >= 5.1.5, ~> 5.1.6 (because there're slight differences in the private API, althoguh following this solution it would be easy to extend support for other versions)
 - There's some weirdness with `Rails.env` vs `DatabaseTasks.env`. From trial-and-error it seems changing `DatabaseTasks.env` to reflect the current execution env will result in issues (with e.g. `db:setup` and `db:reset`), while changing `Rails.env` is actually required for `db:setup` to work correctly. [This fix](https://github.com/thisismydesign/dotenv_rails_db_tasks_fix/blob/v0.2.0/lib/dotenv_rails_db_tasks_fix.rb#L25-L29) seems to work for the use cases I tried but it's good to keep this in mind in case any similar issue presents. This might be due to this issue: https://github.com/rails/rails/issues/32910
 - If you introduce this to a project currently in use a final `db:environment:set` might be needed if prompted
 
